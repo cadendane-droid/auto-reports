@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almura Analytics — Jun 12–19, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --green: #16a34a; --green-bg: #ecfdf5; --green-border: #bbf7d0;
+    --amber: #d97706; --amber-bg: #fffbeb; --amber-border: #fde68a;
+    --red: #dc2626; --red-bg: #fef2f2; --red-border: #fecaca;
+    --ink: #0f172a; --muted: #64748b; --line: #e2e8f0; --card-bg: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f8fafc; color: var(--ink); line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 64px; }
+  header { margin-bottom: 28px; }
+  header h1 { font-size: 28px; margin: 0 0 4px; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; padding: 3px 9px; border-radius: 999px;
+    background: #eef2ff; color: #4338ca; margin-bottom: 10px;
+  }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  @media (max-width: 860px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .kpi-grid { grid-template-columns: 1fr; } }
+  .kpi-card {
+    border-radius: 14px; padding: 18px 18px 16px; border: 1px solid var(--line);
+    background: var(--card-bg); box-shadow: 0 1px 2px rgba(15,23,42,.04);
+  }
+  .kpi-card .label { font-size: 12.5px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+  .kpi-card .value { font-size: 30px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+  .kpi-card .delta { font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; }
+  .kpi-card .note { font-size: 11.5px; color: var(--muted); margin-top: 8px; }
+  .status-green { border-color: var(--green-border); }
+  .status-green .delta { background: var(--green-bg); color: var(--green); }
+  .status-amber { border-color: var(--amber-border); }
+  .status-amber .delta { background: var(--amber-bg); color: var(--amber); }
+  .status-red { border-color: var(--red-border); }
+  .status-red .delta { background: var(--red-bg); color: var(--red); }
+  .charts-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; margin-bottom: 18px; }
+  @media (max-width: 860px) { .charts-grid { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px; box-shadow: 0 1px 2px rgba(15,23,42,.04);
+  }
+  .chart-card.full { grid-column: 1 / -1; }
+  .chart-card h3 { margin: 0 0 2px; font-size: 15px; }
+  .chart-card .chart-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+  .chart-wrap { position: relative; height: 280px; }
+  .meaning {
+    margin-top: 28px; background: #0f172a; color: #e2e8f0; border-radius: 16px;
+    padding: 26px 28px;
+  }
+  .meaning h2 { margin: 0 0 4px; font-size: 19px; color: #fff; }
+  .meaning .meaning-sub { color: #94a3b8; font-size: 13px; margin-bottom: 18px; }
+  .signal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media (max-width: 700px) { .signal-row { grid-template-columns: 1fr; } }
+  .signal-box { background: rgba(255,255,255,.06); border-radius: 10px; padding: 14px 16px; border-left: 3px solid; }
+  .signal-box.win { border-color: #4ade80; }
+  .signal-box.risk { border-color: #f87171; }
+  .signal-box .tag { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 6px; }
+  .signal-box.win .tag { color: #4ade80; }
+  .signal-box.risk .tag { color: #f87171; }
+  .signal-box p { margin: 0; font-size: 13.5px; color: #e2e8f0; }
+  .recs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .recs li { background: rgba(255,255,255,.06); border-radius: 10px; padding: 14px 16px; font-size: 13.5px; }
+  .recs li b { color: #fff; }
+  .data-gap { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); font-size: 12px; color: #94a3b8; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="badge">Early-stage rollout · ~10 users</span>
+    <h1>Almura Analytics — Jun 12–19, 2026</h1>
+    <div class="sub">vs. prior period Jun 5–12, 2026 &nbsp;·&nbsp; Generated Jun 19, 2026 &nbsp;·&nbsp; Source: PostHog "Almura User Workflow" dashboard</div>
+  </header>
+
+  <div class="kpi-grid">
+    <div class="kpi-card status-amber">
+      <div class="label">WEEKLY ACTIVE USERS</div>
+      <div class="value">2</div>
+      <div class="delta">▼ 33% vs 3 last wk</div>
+      <div class="note">n=2–3 users — directional only</div>
+    </div>
+    <div class="kpi-card status-green">
+      <div class="label">CONTACTS + SOURCES ADDED</div>
+      <div class="value">33</div>
+      <div class="delta">▲ 725% vs 4 last wk</div>
+      <div class="note">16 contacts + 17 sources, up from 2 + 2</div>
+    </div>
+    <div class="kpi-card status-amber">
+      <div class="label">AI QUERIES RUN</div>
+      <div class="value">5</div>
+      <div class="delta">— 0% vs 5 last wk</div>
+      <div class="note">Flat despite 7x more data added</div>
+    </div>
+    <div class="kpi-card status-red">
+      <div class="label">SIGNUP → FIRST AI QUERY</div>
+      <div class="value">0%</div>
+      <div class="delta">▼ 50pp vs 50% last wk</div>
+      <div class="note">0 of 3 new contacts this wk reached a query</div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Active Users — 4-Week Trend</h3>
+      <div class="chart-sub">Daily active users (bars) and weekly active users (line), based on core product events</div>
+      <div class="chart-wrap"><canvas id="activeUsersChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Onboarding Funnel Completion</h3>
+      <div class="chart-sub">Signed In → Contact Added → Source Captured → AI Query</div>
+      <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <h3>Activation Events — This Week vs Last Week</h3>
+      <div class="chart-sub">Event volume for the core Almura activation actions</div>
+      <div class="chart-wrap"><canvas id="activationChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="meaning">
+    <h2>What this means</h2>
+    <div class="meaning-sub">Sample sizes are tiny (2–4 active users/week) — read every number below as directional, not statistical.</div>
+
+    <div class="signal-row">
+      <div class="signal-box win">
+        <div class="tag">Strongest signal</div>
+        <p>Core data-entry activity exploded week over week: contacts added (2→16) and sources submitted (2→17) both grew ~7–8x. The handful of active users are going much deeper into the core workflow once they're in.</p>
+      </div>
+      <div class="signal-box risk">
+        <div class="tag">Biggest concern</div>
+        <p>None of that growth reached the AI query step. Onboarding conversion from source capture to first AI query collapsed from 50% (last week) to 0% (this week), and total AI queries stayed flat at 5 even as upstream volume grew 7x.</p>
+      </div>
+    </div>
+
+    <ol class="recs">
+      <li><b>1. Close the gap between "Source Captured" and "First AI Query."</b> Funnel conversion on this step fell from 50% → 0% while contacts/sources grew 7x with AI Query Run volume flat at 5/5. Add an in-product nudge ("Ask Almura about this person") that fires immediately after <code>source_submitted</code> completes, so the first AI query happens in the same session instead of becoming a separate step users skip.</li>
+      <li><b>2. Fix active-user/retention instrumentation before trusting it.</b> <code>$identify</code> — the event used for DAU/WAU/retention — logged zero events on Jun 16–18 despite heavy <code>person_added</code>/<code>source_submitted</code>/<code>profile_viewed</code> activity those same days, and shows 0% week-1 retention for the only eligible cohort (3 users, week of Jun 7). That 0% is more likely a missing-event artifact than real churn. Fire <code>$identify</code> (or a dedicated <code>session_started</code> event) on every app open, not just first login, so active-user and retention numbers reflect real usage.</li>
+    </ol>
+
+    <div class="data-gap">
+      <b>Data gaps flagged, not skipped:</b> no event for "relationship nudge surfaced/acted on" exists in the schema — nudge engagement cannot be measured until it's instrumented. New-signup counts are derived from <code>$identify</code> and inherit the same under-counting risk noted above (3 new in wk of Jun 7, 1 new in wk of Jun 14 — directional only).
+    </div>
+  </div>
+
+  <footer>Almura Analytics · Internal report · Data via PostHog</footer>
+</div>
+
+<script>
+const labels28 = ["May 22","May 23","May 24","May 25","May 26","May 27","May 28","May 29","May 30","May 31","Jun 1","Jun 2","Jun 3","Jun 4","Jun 5","Jun 6","Jun 7","Jun 8","Jun 9","Jun 10","Jun 11","Jun 12","Jun 13","Jun 14","Jun 15","Jun 16","Jun 17","Jun 18","Jun 19"];
+const dau = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,1,1,1,1,1,0];
+// WAU plotted at week-start anchor points (week buckets: May 17, May 24, May 31, Jun 7, Jun 14)
+const wauPoints = {"May 22":0,"May 29":0,"Jun 5":0,"Jun 12":3,"Jun 19":2};
+const wau = labels28.map(l => wauPoints.hasOwnProperty(l) ? wauPoints[l] : null);
+
+new Chart(document.getElementById('activeUsersChart'), {
+  data: {
+    labels: labels28,
+    datasets: [
+      { type: 'bar', label: 'DAU', data: dau, backgroundColor: '#93c5fd', borderRadius: 3, order: 2 },
+      { type: 'line', label: 'WAU', data: wau, borderColor: '#2563eb', backgroundColor: '#2563eb', spanGaps: true, tension: 0.3, pointRadius: 5, borderWidth: 2, order: 1 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } }, x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } } },
+    plugins: { legend: { position: 'top' } }
+  }
+});
+
+new Chart(document.getElementById('funnelChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Signed In', 'Contact Added', 'Source Captured', 'AI Query Run'],
+    datasets: [
+      { label: 'This week (Jun 12–19)', data: [100, 75, 75, 0], backgroundColor: '#dc2626', borderRadius: 4 },
+      { label: 'Last week (Jun 5–12)', data: [100, 100, 100, 50], backgroundColor: '#94a3b8', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } } },
+    plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y + '%' } } }
+  }
+});
+
+new Chart(document.getElementById('activationChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Contact Added', 'Source Submitted', 'AI Query Run', 'Graph Opened', 'Profile Viewed'],
+    datasets: [
+      { label: 'This week (Jun 12–19)', data: [16, 17, 5, 24, 47], backgroundColor: '#16a34a', borderRadius: 4 },
+      { label: 'Last week (Jun 5–12)', data: [2, 2, 5, 18, 17], backgroundColor: '#cbd5e1', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { beginAtZero: true } },
+    plugins: { legend: { position: 'top' } }
+  }
+});
+</script>
+</body>
+</html>
