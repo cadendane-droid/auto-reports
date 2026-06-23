@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Almura Analytics — Jun 16–23, 2026</title>
+<title>Almura Analytics — Jun 17–23, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -89,9 +89,9 @@
 
   <header>
     <span class="badge">Early-stage rollout · ~10 users</span>
-    <h1>Almura Analytics — Jun 16–23, 2026</h1>
-    <div class="sub">vs. prior period Jun 9–16, 2026 &nbsp;·&nbsp; Generated Jun 23, 2026 &nbsp;·&nbsp; Source: PostHog, live-queried (not the cached dashboard view)</div>
-    <div class="version-stamp">Report version: week of Jun 23, 2026</div>
+    <h1>Almura Analytics — Jun 17–23, 2026</h1>
+    <div class="sub">vs. prior period Jun 10–16, 2026 &nbsp;·&nbsp; Generated Jun 23, 2026 &nbsp;·&nbsp; Source: PostHog, live-queried (not the cached dashboard view)</div>
+    <div class="version-stamp">Report version: Jun 23, 2026 — exact 7-day window Jun 17–23 (corrected non-overlapping windows; WAU verified via distinct-person SQL count)</div>
   </header>
 
   <div class="kpi-grid">
@@ -105,25 +105,25 @@
       <div class="label">ACTIVE USERS (real-action)</div>
       <div class="value">5</div>
       <div class="delta">▲ 25% vs 4 last wk</div>
-      <div class="note">Unique users firing source_submitted OR query_asked. n=4–5, directional only — $identify-based DAU/WAU (4 this wk) is unreliable and excluded</div>
+      <div class="note">Unique users firing source_submitted OR query_asked, verified via direct distinct-person count. n=4–5, directional only — $identify-based DAU/WAU is unreliable and excluded</div>
     </div>
     <div class="kpi-card status-green">
       <div class="label">CAPTURES (source_submitted)</div>
-      <div class="value">22</div>
-      <div class="delta">▲ 175% vs 8 last wk</div>
-      <div class="note">person_added separately: 21 this wk vs 6 last wk — tracked, never summed with this metric</div>
+      <div class="value">18</div>
+      <div class="delta">▲ 125% vs 8 last wk</div>
+      <div class="note">person_added separately: 19 this wk vs 6 last wk — tracked, never summed with this metric</div>
     </div>
-    <div class="kpi-card status-red">
+    <div class="kpi-card status-amber">
       <div class="label">EXTRACTION SUCCESS RATE</div>
-      <div class="value">63.6%</div>
+      <div class="value">83.3%</div>
       <div class="delta">▲ vs 12.5% last wk</div>
-      <div class="note">14 of 22 source_submitted reached processing_completed (was 1 of 8). Still well under the ~95% healthy bar — operational issue</div>
+      <div class="note">15 of 18 source_submitted reached processing_completed (was 1 of 8). Improving fast, but still under the ~95% healthy bar — operational issue</div>
     </div>
     <div class="kpi-card status-amber">
       <div class="label">QUERIES (query_asked)</div>
-      <div class="value">5</div>
-      <div class="delta">▼ 29% vs 7 last wk</div>
-      <div class="note">n=5–7, directional only</div>
+      <div class="value">6</div>
+      <div class="delta">▼ 14% vs 7 last wk</div>
+      <div class="note">n=6–7, directional only</div>
     </div>
     <div class="kpi-card status-amber headline">
       <div class="label">ACTIVATION RATE (signup → first query)</div>
@@ -141,18 +141,18 @@
       <li><code>graph_opened</code> ≠ <code>$pageview</code> on /network — an intentional graph-open action vs. any page load of that route</li>
       <li><code>profile_viewed</code> ≠ <code>$pageview</code> on /people/[id] — viewing a profile vs. any page load of that route</li>
     </ul>
-    All numbers here come from fresh PostHog queries for the exact windows shown (last 7 days vs. the 7 days before that), not the dashboard's cached 60-day view. No contact names, note text, query text, fact values, feedback text, or search strings appear anywhere in this report — only counts, lengths, ids, booleans, and durations.
+    All numbers here come from fresh PostHog queries for the exact windows shown (Jun 17–23 vs. Jun 10–16, non-overlapping), not the dashboard's cached 60-day view. No contact names, note text, query text, fact values, feedback text, or search strings appear anywhere in this report — only counts, lengths, ids, booleans, and durations.
   </div>
 
   <div class="charts-grid">
     <div class="chart-card full">
-      <h3>Activation Funnel — This Week (Jun 16–23)</h3>
-      <div class="chart-sub">account_created → source_submitted → processing_completed → query_asked, 14-day conversion window. n=1 signup — every step shows 100% because there is exactly one entrant, not because the funnel is healthy. Last week had 0 signups, so no funnel exists to compare against.</div>
+      <h3>Activation Funnel — This Week (Jun 17–23)</h3>
+      <div class="chart-sub">account_created → source_submitted → processing_completed → query_asked, 14-day conversion window. n=1 signup — every step shows 100% because there is exactly one entrant, not because the funnel is healthy. The one signup completed every step (account_created → source_submitted in 1m12s → processing_completed in 8s → query_asked in 1m16s). Last week had 0 signups, so no funnel exists to compare against.</div>
       <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
     </div>
     <div class="chart-card">
       <h3>Pipeline Health — 4-Week Trend</h3>
-      <div class="chart-sub">source_submitted vs. processing_completed, calendar weeks. Never summed — two separate lines. Week of Jun 21 is partial (3 of 7 days so far).</div>
+      <div class="chart-sub">source_submitted vs. processing_completed. First 4 points are calendar weeks; last point is this week's exact 7-day total (Jun 17–23). Never summed — two separate lines.</div>
       <div class="chart-wrap"><canvas id="pipelineChart"></canvas></div>
     </div>
     <div class="chart-card">
@@ -162,7 +162,7 @@
     </div>
     <div class="chart-card full">
       <h3>Query Depth by Turn — This Week</h3>
-      <div class="chart-sub">turn_index on query_asked, last 7 days (all 5 events carry turn_index — this window is fully post-instrumentation, unlike earlier weeks where a "none" bucket exists). n=5, directional only.</div>
+      <div class="chart-sub">turn_index on query_asked, Jun 17–23. All 6 events this week carry a turn_index — no "none" bucket to exclude in this window. n=6, directional only.</div>
       <div class="chart-wrap"><canvas id="depthChart"></canvas></div>
     </div>
   </div>
@@ -174,21 +174,20 @@
     <div class="signal-row">
       <div class="signal-box win">
         <div class="tag">Strongest signal</div>
-        <p>Capture activity is up sharply: source_submitted grew from 8 → 22 (+175%) and person_added from 6 → 21 (+250%) week over week. The people actually using Almura are putting meaningfully more into it.</p>
+        <p>Capture activity is up sharply: source_submitted grew from 8 → 18 (+125%) and person_added from 6 → 19 (+217%) week over week. The people actually using Almura are putting meaningfully more into it.</p>
       </div>
       <div class="signal-box risk">
         <div class="tag">Biggest concern</div>
-        <p>Extraction is still failing on a large share of submissions: only 14 of 22 source_submitted (63.6%) completed processing this week, up from just 1 of 8 (12.5%) last week — improving, but both far below the ~95% bar that would indicate a healthy pipeline. With n=1 signup this week, the activation funnel itself has nothing meaningful to say; the extraction success rate is the real story.</p>
+        <p>Extraction is still not fully reliable: 15 of 18 source_submitted (83.3%) completed processing this week, up sharply from 1 of 8 (12.5%) last week — real improvement, but still under the ~95% bar that would indicate a trustworthy pipeline. With n=1 signup this week, the activation funnel has nothing statistically meaningful to say; the extraction success rate is the larger-sample, more reliable signal.</p>
       </div>
     </div>
 
     <ol class="recs">
-      <li><b>1. Treat the extraction pipeline as broken until proven otherwise.</b> Extraction success rate (processing_completed / source_submitted) is 63.6% this week and 12.5% last week — both well under the ~95% threshold that would signal a healthy "silent-failure-free" pipeline. A broken pipeline invalidates every downstream number in this report (queries, activation, capture speed). Before any product or onboarding work, inspect the Inngest extract job logs for this week's failed submissions and re-run the pipeline verification script to find why over a third of this week's submissions — and seven-eighths of last week's — never reached processing_completed.</li>
-      <li><b>2. Add an automated alert on the source_submitted → processing_completed ratio.</b> This failure mode is currently only visible a week later in a report like this one. A simple threshold alert (e.g., notify if the rolling 24h ratio drops under ~90%) would catch the next silent-failure episode the same day it starts, instead of after it's already eaten a week of submissions.</li>
+      <li><b>1. Treat the extraction pipeline as not-yet-reliable.</b> Extraction success rate (processing_completed / source_submitted) is 83.3% this week, up from 12.5% last week — a real improvement, but 3 of this week's 18 submissions still never reached processing_completed. At ~10 total users, each silent failure is directly visible to a real person and erodes trust before growth work would even matter. Before investing further in onboarding or activation, pull the Inngest extract job logs for this week's 3 failed submissions and look for a common cause (source type, file size, timeout) to push the rate past the ~95% bar.</li>
     </ol>
 
     <div class="data-gap">
-      <b>Data gaps and small-sample flags, called out rather than skipped:</b> Activation funnel this week is n=1 (1 signup) — every "100%" step is a single data point, not a trend. Last week had 0 signups, so the funnel literally has no data to show for that period (not a query error). Capture-speed p50 and p90 for ms_to_node_visible are identical (4,375ms), which strongly suggests a near-zero distinct sample — treat as low-confidence, not a real percentile. Query depth (3×turn 1, 1×turn 2, 1×turn 3 out of 5 total) is too small to call a trend either way. $identify-based DAU (4 this week, 4 last week) is shown only as a side-note per the report's own rule that it is unreliable for active-user counts — the real-action WAU above (5 vs 4) is the number to trust.
+      <b>Data gaps and small-sample flags, called out rather than skipped:</b> Activation funnel this week is n=1 (1 signup) — every "100%" step is a single data point, not a trend. Last week had 0 signups, so the funnel literally has no data to show for that period (not a query error). Capture-speed for ms_to_node_visible has only n=2 this week (p50=4,285ms, p90=4,357ms) — too few points for a real percentile, flagged low-confidence. Query depth (4×turn 1, 1×turn 2, 1×turn 3 out of 6 total) is too small to call a trend either way. Secondary feature engagement this week: graph_opened=21, profile_viewed=33 (higher volume but still small-sample), while node_preview_opened, people_search_performed, feedback_opened, and feedback_submitted each fired only once — too low to draw any conclusion about feature stickiness yet. $identify-based DAU/WAU is intentionally excluded as unreliable per the event taxonomy's own rules; only real-action WAU (5 this week vs 4 last week, via source_submitted/query_asked, verified by direct distinct-person SQL count) is reported above.
     </div>
   </div>
 
@@ -201,7 +200,7 @@ new Chart(document.getElementById('funnelChart'), {
   data: {
     labels: ['account_created', 'source_submitted', 'processing_completed', 'query_asked'],
     datasets: [
-      { label: 'This week (Jun 16–23), n=1', data: [100, 100, 100, 100], backgroundColor: '#2563eb', borderRadius: 4 }
+      { label: 'This week (Jun 17–23), n=1', data: [100, 100, 100, 100], backgroundColor: '#2563eb', borderRadius: 4 }
     ]
   },
   options: {
@@ -213,10 +212,10 @@ new Chart(document.getElementById('funnelChart'), {
 
 new Chart(document.getElementById('pipelineChart'), {
   data: {
-    labels: ['Wk of May 24', 'Wk of May 31', 'Wk of Jun 7', 'Wk of Jun 14', 'Wk of Jun 21 (partial)'],
+    labels: ['Wk of May 24', 'Wk of May 31', 'Wk of Jun 7', 'Wk of Jun 14', 'This week (Jun 17–23, exact)'],
     datasets: [
-      { type: 'line', label: 'source_submitted', data: [0,0,3,19,3], borderColor: '#2563eb', backgroundColor: '#2563eb', tension: 0.3, pointRadius: 4, borderWidth: 2 },
-      { type: 'line', label: 'processing_completed', data: [0,0,1,11,3], borderColor: '#16a34a', backgroundColor: '#16a34a', tension: 0.3, pointRadius: 4, borderWidth: 2 }
+      { type: 'line', label: 'source_submitted', data: [0,0,3,19,18], borderColor: '#2563eb', backgroundColor: '#2563eb', tension: 0.3, pointRadius: 4, borderWidth: 2 },
+      { type: 'line', label: 'processing_completed', data: [0,0,1,11,15], borderColor: '#16a34a', backgroundColor: '#16a34a', tension: 0.3, pointRadius: 4, borderWidth: 2 }
     ]
   },
   options: {
@@ -231,8 +230,8 @@ new Chart(document.getElementById('captureChart'), {
   data: {
     labels: ['person_added', 'source_submitted'],
     datasets: [
-      { label: 'This week (Jun 16–23)', data: [21, 22], backgroundColor: '#16a34a', borderRadius: 4 },
-      { label: 'Last week (Jun 9–16)', data: [6, 8], backgroundColor: '#cbd5e1', borderRadius: 4 }
+      { label: 'This week (Jun 17–23)', data: [19, 18], backgroundColor: '#16a34a', borderRadius: 4 },
+      { label: 'Last week (Jun 10–16)', data: [6, 8], backgroundColor: '#cbd5e1', borderRadius: 4 }
     ]
   },
   options: {
@@ -247,7 +246,7 @@ new Chart(document.getElementById('depthChart'), {
   data: {
     labels: ['Turn 1', 'Turn 2', 'Turn 3'],
     datasets: [
-      { label: 'query_asked count (this week, n=5)', data: [3, 1, 1], backgroundColor: '#7c3aed', borderRadius: 4 }
+      { label: 'query_asked count (this week, n=6)', data: [4, 1, 1], backgroundColor: '#7c3aed', borderRadius: 4 }
     ]
   },
   options: {
