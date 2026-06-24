@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almura Analytics — Week of June 17–24, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --green: #1a9850;
+    --amber: #d97706;
+    --red: #dc2626;
+    --gray: #6b7280;
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --text: #1f2937;
+    --muted: #6b7280;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { margin-bottom: 28px; }
+  header h1 { margin: 0 0 4px; font-size: 26px; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  h2 { font-size: 18px; margin: 40px 0 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+  }
+  .kpi {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-top: 4px solid var(--gray);
+  }
+  .kpi.green { border-top-color: var(--green); }
+  .kpi.amber { border-top-color: var(--amber); }
+  .kpi.red { border-top-color: var(--red); }
+  .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .kpi .value { font-size: 28px; font-weight: 700; margin: 4px 0 2px; }
+  .kpi .delta { font-size: 13px; font-weight: 600; }
+  .kpi .delta.up { color: var(--green); }
+  .kpi .delta.down { color: var(--red); }
+  .kpi .flag { display: block; font-size: 11px; color: var(--amber); margin-top: 4px; font-weight: 600; }
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px;
+  }
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .chart-card h3 { margin: 0 0 12px; font-size: 14px; color: var(--text); }
+  .chart-card .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  canvas { max-height: 280px; }
+  .callout {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gray);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+  .callout.howto { border-left-color: #3b82f6; }
+  .callout.meaning { border-left-color: var(--amber); }
+  .callout ul { margin: 8px 0 0; padding-left: 20px; }
+  .callout li { margin-bottom: 6px; }
+  .rec { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border); }
+  .rec .tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #fff; background: var(--red); padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; }
+  .rec.p2 .tag { background: var(--gray); }
+  footer { margin-top: 50px; font-size: 12px; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Almura Analytics — Week of June 17–24, 2026</h1>
+  <div class="sub">Generated June 24, 2026 · Source: PostHog project 465974 · Rolling 7-day windows (current: Jun 17–24 vs prior: Jun 10–17)</div>
+</header>
+
+<h2>Key metrics</h2>
+<div class="kpi-grid">
+
+  <div class="kpi green">
+    <div class="label">New Signups</div>
+    <div class="value">1</div>
+    <div class="delta up">vs 0 last week</div>
+  </div>
+
+  <div class="kpi green">
+    <div class="label">Active Users (real action)</div>
+    <div class="value">5</div>
+    <div class="delta up">+25% WoW (4 → 5)</div>
+  </div>
+
+  <div class="kpi green">
+    <div class="label">Captures (source_submitted)</div>
+    <div class="value">18</div>
+    <div class="delta up">+38.5% WoW (13 → 18)</div>
+  </div>
+
+  <div class="kpi amber">
+    <div class="label">Extraction Success Rate</div>
+    <div class="value">83.3%</div>
+    <div class="delta up">+60.2pp WoW (23.1% → 83.3%)</div>
+    <span class="flag">⚠ Still below ~95% healthy target</span>
+  </div>
+
+  <div class="kpi red">
+    <div class="label">Queries Asked</div>
+    <div class="value">6</div>
+    <div class="delta down">-14.3% WoW (7 → 6)</div>
+  </div>
+
+  <div class="kpi gray">
+    <div class="label">Activation Rate</div>
+    <div class="value">100%</div>
+    <div class="delta">account_created → query_asked</div>
+    <span class="flag">⚠ n=1 this week — not statistically meaningful</span>
+  </div>
+
+</div>
+
+<h2>Charts</h2>
+<div class="charts-grid">
+
+  <div class="chart-card">
+    <h3>Activation Funnel (current week)</h3>
+    <canvas id="funnelChart"></canvas>
+    <div class="note">account_created → source_submitted → processing_completed → query_asked. n=1 signup this week; prior week had 0 signups (no funnel data). Directional only.</div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Pipeline Health — 4 Week Trend</h3>
+    <canvas id="pipelineChart"></canvas>
+    <div class="note">Submitted and Extracted are separate event counts — do not sum or treat as a single funnel total.</div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Capture Activity — This Week vs Last Week</h3>
+    <canvas id="captureChart"></canvas>
+    <div class="note">person_added (new people) and source_submitted (captures) are independent events — do not sum.</div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Query Depth (current week, turn_index)</h3>
+    <canvas id="depthChart"></canvas>
+    <div class="note">Turn 1 = one-off question; turns 2–3 = real follow-up conversation. n=6 total — directional only.</div>
+  </div>
+
+</div>
+
+<h2>How to read this</h2>
+<div class="callout howto">
+  These metrics intentionally are <strong>not</strong> additive across event types. Keep these pairs separate:
+  <ul>
+    <li><strong>person_added</strong> (new contact added) ≠ <strong>source_submitted</strong> (a source was captured) — one capture can add multiple people, or zero.</li>
+    <li><strong>graph_opened</strong> ≠ <strong>$pageview</strong> on <code>/network</code> — pageviews include reloads/navigation noise; graph_opened is the real engagement signal.</li>
+    <li><strong>profile_viewed</strong> ≠ <strong>$pageview</strong> on <code>/people/[id]</code> — same reasoning, profile_viewed reflects intentional viewing.</li>
+  </ul>
+  "Active users" above counts unique people who did <strong>source_submitted OR query_asked</strong> — not raw identify/pageview activity. With ~10 total users in the system, all percentages and rates here are <strong>directional</strong>, not statistically significant.
+</div>
+
+<h2>What this means</h2>
+<div class="callout meaning">
+
+  <div class="rec p1">
+    <span class="tag">Priority 1 — Operational</span>
+    Extraction success rate is <strong>83.3%</strong> this week (15 of 18 submissions successfully extracted), a large improvement from <strong>23.1%</strong> last week (3 of 13) — but still below the ~95% healthy target. Recommend inspecting the extraction pipeline (Inngest extract job / pipeline verification script) for recurring failure causes before investing further in top-of-funnel growth. A pipeline that silently drops ~17% of submissions undermines any activation gains.
+  </div>
+
+  <div class="rec p2">
+    <span class="tag">Priority 2 — Engagement</span>
+    Queries asked dipped slightly WoW (7 → 6) on a small base, and of the 6 queries this week only 2 (33%) went beyond a single turn. This is too small a sample to act on decisively, but worth watching — if the dip continues next week alongside healthy extraction, consider a lightweight in-app nudge prompting users to ask a follow-up question after a successful extraction.
+  </div>
+
+</div>
+
+<footer>
+  Almura Weekly PostHog Report · All figures directional given current user base size (~10 users) · No personal data (names, note text, query text, fact values) is included in this report.
+</footer>
+
+</div>
+
+<script>
+const grid = { color: '#eef0f3' };
+const fontColor = '#1f2937';
+
+new Chart(document.getElementById('funnelChart'), {
+  type: 'bar',
+  data: {
+    labels: ['account_created', 'source_submitted', 'processing_completed', 'query_asked'],
+    datasets: [{
+      label: 'Users this week (n=1)',
+      data: [1, 1, 1, 1],
+      backgroundColor: ['#3b82f6', '#60a5fa', '#93c5fd', '#1d4ed8']
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, ticks: { stepSize: 1 }, grid },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('pipelineChart'), {
+  type: 'line',
+  data: {
+    labels: ['May 24', 'May 31', 'Jun 7', 'Jun 14', 'Jun 21 (partial)'],
+    datasets: [
+      {
+        label: 'Submitted',
+        data: [0, 0, 3, 19, 3],
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.1)',
+        tension: 0.25
+      },
+      {
+        label: 'Extracted',
+        data: [0, 0, 1, 11, 3],
+        borderColor: '#1a9850',
+        backgroundColor: 'rgba(26,150,80,0.1)',
+        tension: 0.25
+      }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { beginAtZero: true, grid }, x: { grid: { display: false } } }
+  }
+});
+
+new Chart(document.getElementById('captureChart'), {
+  type: 'bar',
+  data: {
+    labels: ['New People (person_added)', 'Captures (source_submitted)'],
+    datasets: [
+      {
+        label: 'Last week (Jun 10–17)',
+        data: [12, 13],
+        backgroundColor: '#cbd5e1'
+      },
+      {
+        label: 'This week (Jun 17–24)',
+        data: [19, 18],
+        backgroundColor: '#3b82f6'
+      }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { beginAtZero: true, grid }, x: { grid: { display: false } } }
+  }
+});
+
+new Chart(document.getElementById('depthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Turn 1 (one-off)', 'Turn 2', 'Turn 3'],
+    datasets: [{
+      label: 'Queries this week',
+      data: [4, 1, 1],
+      backgroundColor: ['#fbbf24', '#34d399', '#10b981']
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }, grid }, x: { grid: { display: false } } }
+  }
+});
+</script>
+
+</body>
+</html>
