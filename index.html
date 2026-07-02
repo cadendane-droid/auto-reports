@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Almura Analytics — Jun 25–Jul 1, 2026</title>
+<title>Almura Analytics — Jun 26–Jul 2, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -89,9 +89,9 @@
 
   <header>
     <span class="badge">Early-stage rollout · ~10 users</span>
-    <h1>Almura Analytics — Jun 25–Jul 1, 2026</h1>
-    <div class="sub">vs. prior period Jun 18–24, 2026 &nbsp;·&nbsp; Generated Jul 1, 2026 &nbsp;·&nbsp; Source: PostHog, live-queried (not the cached dashboard view)</div>
-    <div class="version-stamp">Report version: Jul 1, 2026 — exact non-overlapping 7-day windows (Jun 25–Jul 1 vs Jun 18–24). Active-users figure uses a real-action distinct-person count (source_submitted OR query_asked), not $identify/$pageview DAU. This week's data is effectively frozen at yesterday's (Jun 30) reported levels — no new events have landed yet in today's partial day. The extraction-pipeline concern raised in the Jun 29 report is now resolved: last week's fuller sample (n=13) converted 100%, not 83%. The broader activity-collapse concern raised in the Jun 29 and Jun 30 reports remains open and is the focus of this week's read.</div>
+    <h1>Almura Analytics — Jun 26–Jul 2, 2026</h1>
+    <div class="sub">vs. prior period Jun 19–25, 2026 &nbsp;·&nbsp; Generated Jul 2, 2026 &nbsp;·&nbsp; Source: PostHog, live-queried (not the cached dashboard view)</div>
+    <div class="version-stamp">Report version: Jul 2, 2026 — exact non-overlapping 7-day windows (Jun 26–Jul 2 vs Jun 19–25). Active-users figure is an exact distinct-person count (source_submitted OR query_asked via SQL), not a summed daily-active proxy and not $identify/$pageview DAU. The broad activity collapse first flagged in the Jun 29 report is now in its second full week: 0 new signups this week (2nd straight week with zero), though queries ticked up WoW — see the query-depth data-quality flag below before reading that as a recovery signal.</div>
   </header>
 
   <div class="kpi-grid">
@@ -99,37 +99,37 @@
       <div class="label">NEW SIGNUPS</div>
       <div class="value">0</div>
       <div class="delta">▼ 0 vs 1 last wk</div>
-      <div class="note">account_created did not fire this week. n too small for a % change. Only 1 account_created event exists in the product's entire history (it fell in last week's window, Jun 18–24).</div>
+      <div class="note">account_created did not fire this week or last week's comparison period had only 1. Only 1 account_created event exists in the product's entire history (Jun 23, 2026) — n too small for a meaningful % change.</div>
     </div>
     <div class="kpi-card status-red">
       <div class="label">ACTIVE USERS (real-action)</div>
-      <div class="value">1</div>
-      <div class="delta">▼ -75% vs 4 last wk</div>
-      <div class="note">Unique users firing source_submitted OR query_asked, exact distinct-person count, this week vs last. n=1, directional only — $identify-based DAU/WAU is excluded as unreliable per report policy.</div>
+      <div class="value">2</div>
+      <div class="delta">▼ -50% vs 4 last wk</div>
+      <div class="note">Exact distinct-person count firing source_submitted OR query_asked, this week vs last (SQL countDistinct, not a summed daily proxy). n=2, directional only — $identify-based DAU/WAU is excluded as unreliable per report policy.</div>
     </div>
     <div class="kpi-card status-red">
       <div class="label">CAPTURES (source_submitted)</div>
       <div class="value">1</div>
-      <div class="delta">▼ -92.3% vs 13 last wk</div>
-      <div class="note">person_added tracked separately: 1 this wk vs 13 last wk — identical to source_submitted both weeks, meaning zero repeat captures on existing people in this span (every submission created a new person).</div>
+      <div class="delta">▼ -85.7% vs 7 last wk</div>
+      <div class="note">person_added tracked separately: 1 this wk vs 7 last wk — identical to source_submitted both weeks, meaning zero repeat captures on existing people in either window (every submission created a new person).</div>
     </div>
     <div class="kpi-card status-green">
       <div class="label">EXTRACTION SUCCESS RATE</div>
       <div class="value">100%</div>
       <div class="delta">▲ flat vs 100% last wk</div>
-      <div class="note">processing_completed / source_submitted = 1 of 1 this week, 13 of 13 last week. Last week's n=13 is a real sample and resolves the 83.3% (15 of 18) concern flagged in the Jun 29 report — pipeline is healthy.</div>
+      <div class="note">processing_completed / source_submitted = 1 of 1 this week, 7 of 7 last week. Pipeline remains healthy — no notes are being silently lost.</div>
     </div>
     <div class="kpi-card status-amber">
       <div class="label">QUERIES (query_asked)</div>
-      <div class="value">3</div>
-      <div class="delta">▼ -50% vs 6 last wk</div>
-      <div class="note">Down in line with the broader capture/active-user collapse this week. Directional only at this volume.</div>
+      <div class="value">7</div>
+      <div class="delta">▲ +16.7% vs 6 last wk</div>
+      <div class="note">Up WoW, but flag before reading this as recovery: all 4 of this week's queries from Jul 1 are missing turn_index/conversation_id (data-quality issue, see chart below) — only the 3 from Jun 28 are fully instrumented. n=7, directional only.</div>
     </div>
     <div class="kpi-card status-green headline">
       <div class="label">ACTIVATION RATE (signup → first query)</div>
       <div class="value">N/A</div>
       <div class="delta">0 signups this wk</div>
-      <div class="note">No new cohort this week. Trailing 2 weeks (Jun 18–Jul 1): every person who submitted a source went on to query — source_submitted → query_asked converts 100% (n=4). The in-app funnel is not the bottleneck; volume is.</div>
+      <div class="note">No new cohort this week — same as last week. Trailing 2 weeks (Jun 19–Jul 2): every person who submitted a source went on to query — source_submitted → query_asked converts 100% (n=4). The in-app funnel is not the bottleneck; top-of-funnel volume is.</div>
     </div>
   </div>
 
@@ -141,13 +141,13 @@
       <li><code>graph_opened</code> ≠ <code>$pageview</code> on /network — an intentional graph-open action vs. any page load of that route</li>
       <li><code>profile_viewed</code> ≠ <code>$pageview</code> on /people/[id] — viewing a profile vs. any page load of that route</li>
     </ul>
-    All numbers here come from fresh PostHog queries for the exact windows shown (Jun 25–Jul 1 vs. Jun 18–24, non-overlapping), not the dashboard's cached 60-day view. No contact names, note text, query text, fact values, feedback text, or search strings appear anywhere in this report — only counts, lengths, ids, booleans, and durations.
+    All numbers here come from fresh PostHog queries for the exact windows shown (Jun 26–Jul 2 vs. Jun 19–25, non-overlapping), not the dashboard's cached 60-day view. No contact names, note text, query text, fact values, feedback text, or search strings appear anywhere in this report — only counts, lengths, ids, booleans, and durations.
   </div>
 
   <div class="charts-grid">
     <div class="chart-card full">
-      <h3>Activation Funnel — All-Time (n=1, no new cohort this week)</h3>
-      <div class="chart-sub">account_created → source_submitted → processing_completed → query_asked, 14-day conversion window. No account_created event fired in this week's window, so there is no new cohort to measure — the bars below show the product's only all-time signup (from Jun 18–24), which converted 100% → 100% → 100%. Separately, source_submitted → query_asked converts 100% across the trailing 2 weeks (n=4) — the funnel itself shows no drop-off wherever it has been tested.</div>
+      <h3>Activation Funnel — Last Week's Cohort (n=1, no new cohort this week)</h3>
+      <div class="chart-sub">account_created → source_submitted → processing_completed → query_asked, 14-day conversion window. No account_created event fired in this week's window (Jun 26–Jul 2), so there is no new cohort to measure — the bars below show last week's only signup (Jun 19–25), which converted 100% → 100% → 100%. Separately, source_submitted → query_asked converts 100% across the trailing 2 weeks (n=4) — the funnel itself shows no drop-off wherever it has been tested.</div>
       <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
     </div>
     <div class="chart-card">
@@ -162,7 +162,7 @@
     </div>
     <div class="chart-card full">
       <h3>Query Depth by Turn — This Week</h3>
-      <div class="chart-sub">turn_index on query_asked, Jun 25–Jul 1. All 3 events this week carry a turn_index — no "none" bucket to exclude in this window. n=3, directional only.</div>
+      <div class="chart-sub">turn_index on query_asked, Jun 26–Jul 2. "None" excluded from the chart per policy: all 4 of Jul 1's query_asked events lack turn_index/conversation_id entirely — a data-quality gap, not a behavior signal. Only the 3 events from Jun 28 carry turn_index. n=3 charted, n=7 total.</div>
       <div class="chart-wrap"><canvas id="depthChart"></canvas></div>
     </div>
   </div>
@@ -174,21 +174,21 @@
     <div class="signal-row">
       <div class="signal-box win">
         <div class="tag">Strongest signal</div>
-        <p>The activation funnel is clean wherever it's been measured: the product's only all-time signup converted 100% through every step (account_created → source_submitted → processing_completed → query_asked), and over the trailing two weeks, 100% of the 4 people who submitted a source went on to ask a query. The extraction pipeline itself is also confirmed healthy — 13 of 13 source_submitted events converted to processing_completed last week, resolving the 83.3% concern raised in the Jun 29 report. When people show up, the product works.</p>
+        <p>The activation funnel and extraction pipeline are both clean wherever they've been measured. Last week's only signup converted 100% through every step (account_created → source_submitted → processing_completed → query_asked), and over the trailing two weeks 100% of the 4 people who submitted a source went on to ask a query. Extraction success rate held at 100% both this week (1 of 1) and last week (7 of 7) — no notes are being silently lost. When people show up, the product works end to end.</p>
       </div>
       <div class="signal-box risk">
         <div class="tag">Biggest concern</div>
-        <p>Almost nobody is showing up. This week: 0 new signups, 1 capture, 1 active user, 3 queries — essentially frozen at the same low level reported yesterday, with no new events yet in today's partial day. This is now the third consecutive daily report (Jun 29, Jun 30, Jul 1) flagging a broad, synchronized activity collapse across unrelated event types (captures, queries, graph opens, profile views) that started around Jun 24. A quiet week is plausible at ~10 pilot users, but the persistence and breadth of the drop still hasn't been distinguished from a tracking or deployment regression.</p>
+        <p>Almost nobody is showing up, for a second straight week. This week: 0 new signups (2nd consecutive week at zero), 1 capture, 2 active users — down from an already-thin 1, 7, and 4 last week. Queries alone ticked up (7 vs 6), but 4 of those 7 are missing turn_index/conversation_id entirely, a data-quality regression separate from the volume question. This is now the fourth consecutive report (Jun 29, Jun 30, Jul 1, Jul 2) flagging a broad, synchronized activity collapse that started around Jun 24 — still not distinguished from a tracking or deployment regression.</p>
       </div>
     </div>
 
     <ol class="recs">
-      <li><b>1. Stop tuning the in-app activation funnel — it converts at 100% everywhere it's been tested (n=1 all-time signup, n=4 source_submitted→query_asked over 2 weeks) — and instead treat this as a top-of-funnel acquisition problem.</b> Only 1 account_created event exists in the product's entire history, and 0 fired this week. Recommend a direct outreach to the ~10 pilot users to find out why no one has signed up a second time or invited teammates, paired with a quick production check that the signup flow and its tracking snippet are still firing correctly after any recent deploy — since the drop-to-near-zero coincides with the same Jun 24 inflection point flagged in the last two reports.</li>
-      <li><b>2. With the extraction pipeline now confirmed healthy (100% success both this week and last, n=13), shift secondary attention to conversation depth once volume recovers.</b> query_asked is still mostly one-off: 2 of 3 queries this week and 4 of 6 last week landed at turn_index 1. Once new captures resume, consider a lightweight in-session prompt suggesting a natural follow-up question after the first answer, to convert more single queries into multi-turn conversations.</li>
+      <li><b>1. Signups have been at zero for two consecutive weeks (0 this week, 0→1 last week, and only 1 account_created event in the product's entire history) while the activation funnel itself converts 100% wherever tested (n=1 all-time signup, n=4 source_submitted→query_asked over the trailing 2 weeks) — treat this as a top-of-funnel acquisition problem, not an in-app activation problem.</b> Recommend a direct outreach to the ~10 pilot users to find out why no one has signed up again or invited teammates, paired with a production check that the signup flow and its tracking snippet are still firing correctly — the drop-to-near-zero still coincides with the Jun 24 inflection point flagged in the last three reports.</li>
+      <li><b>2. Fix the query_asked instrumentation gap before trusting query-depth trends again.</b> All 4 of this week's query_asked events (Jul 1) fired without turn_index or conversation_id, versus full coverage on the 3 events from Jun 28 and in every prior week since the instrumentation deploy. Have engineering check whether a recent deploy reintroduced a code path that calls query_asked without the turn-tracking context — this data-quality gap makes this week's "queries up 16.7%" figure unreliable as a behavioral signal.</li>
     </ol>
 
     <div class="data-gap">
-      <b>Data gaps and small-sample flags, called out rather than skipped:</b> The account_created-based activation funnel has n=1 across the product's entire history — no new cohort entered this week, so the funnel chart above shows the one carried-over signup, not new data. The source_submitted → query_asked funnel (n=4, trailing 2 weeks) is a small but real sample and is reported separately, not summed with the 4-step funnel. Capture-speed for ms_to_node_visible remains too thin to trend: 1 timed capture this week (p50=p90=4320ms) and 2 last week (p50=4285ms, p90=4357ms) — flagged here rather than silently charted. Query depth this week (2 at turn 1, 1 at turn 2, out of 3 total) and last week (4 at turn 1, 1 at turn 2, 1 at turn 3, out of 6) are both small-sample. Feature engagement dropped in step with the broader collapse: graph_opened 5 this week vs 20 last week, profile_viewed 5 vs 17, node_preview_opened/people_search_performed/feedback_submitted each at 0 this week vs 1 each last week — directionally consistent with the capture contraction but each individually too small (single digits) to call a confident trend on its own. $identify/$pageview-based DAU/WAU is intentionally excluded as unreliable per the event taxonomy's own rules; only real-action WAU (1 this week vs 4 last week, via source_submitted/query_asked, exact distinct-person count) is reported above.
+      <b>Data gaps and small-sample flags, called out rather than skipped:</b> The account_created-based activation funnel has n=1 across the product's entire history — no new cohort entered this week or last week, so the funnel chart above shows last week's one carried-over signup, not new data. The source_submitted → query_asked funnel (n=4, trailing 2 weeks) is a small but real sample and is reported separately, not summed with the 4-step funnel. Capture-speed for ms_to_node_visible remains too thin to trend: 1 timed capture this week (p50=p90=4320ms) and 2 last week (p50=4285ms, p90=4357ms) — flagged here rather than silently charted. Query depth this week is split: 3 events (Jun 28) carry turn_index (2 at turn 1, 1 at turn 2), while all 4 events from Jul 1 fall in "none" and are excluded from the chart per the taxonomy's own rule — this is reported as a data-quality gap, not a behavior finding. Feature engagement fell in step with the broader collapse: graph_opened 5 this week vs 13 last week, profile_viewed 5 vs 11, node_preview_opened/people_search_performed/feedback_submitted each at 0 this week vs 1 each last week — directionally consistent with the capture contraction but each individually too small (single digits) to call a confident trend on its own. $identify/$pageview-based DAU/WAU is intentionally excluded as unreliable per the event taxonomy's own rules; only real-action WAU (2 this week vs 4 last week, exact distinct-person count via SQL) is reported above.
     </div>
   </div>
 
@@ -201,13 +201,13 @@ new Chart(document.getElementById('funnelChart'), {
   data: {
     labels: ['account_created', 'source_submitted', 'processing_completed', 'query_asked'],
     datasets: [
-      { label: 'All-time, n=1 (carried from Jun 18–24)', data: [100, 100, 100, 100], backgroundColor: '#2563eb', borderRadius: 4 }
+      { label: 'Last week\'s cohort, n=1 (Jun 19–25)', data: [100, 100, 100, 100], backgroundColor: '#2563eb', borderRadius: 4 }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     scales: { y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } } },
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '% (n=1 — single entrant, all-time, no new signup this week)' } } }
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '% (n=1 — single entrant, last week, no new signup this week)' } } }
   }
 });
 
@@ -231,8 +231,8 @@ new Chart(document.getElementById('captureChart'), {
   data: {
     labels: ['person_added', 'source_submitted'],
     datasets: [
-      { label: 'This week (Jun 25–Jul 1)', data: [1, 1], backgroundColor: '#dc2626', borderRadius: 4 },
-      { label: 'Last week (Jun 18–24)', data: [13, 13], backgroundColor: '#cbd5e1', borderRadius: 4 }
+      { label: 'This week (Jun 26–Jul 2)', data: [1, 1], backgroundColor: '#dc2626', borderRadius: 4 },
+      { label: 'Last week (Jun 19–25)', data: [7, 7], backgroundColor: '#cbd5e1', borderRadius: 4 }
     ]
   },
   options: {
@@ -247,7 +247,7 @@ new Chart(document.getElementById('depthChart'), {
   data: {
     labels: ['Turn 1', 'Turn 2'],
     datasets: [
-      { label: 'query_asked count (this week, n=3)', data: [2, 1], backgroundColor: '#7c3aed', borderRadius: 4 }
+      { label: 'query_asked count (Jun 28 only, n=3; Jul 1\'s 4 events excluded — no turn_index)', data: [2, 1], backgroundColor: '#7c3aed', borderRadius: 4 }
     ]
   },
   options: {
