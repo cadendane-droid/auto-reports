@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Almura Analytics — July 4–10, 2026</title>
+<title>Almura Analytics — July 4–11, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -101,9 +101,9 @@
 <div class="wrap">
 
   <header>
-    <h1>Almura Analytics — July 4–10, 2026</h1>
-    <div class="generated">Generated July 10, 2026 · compared to the prior 7 days (June 27 – July 3)</div>
-    <div class="version-stamp">Week of Jul 4–10, 2026</div>
+    <h1>Almura Analytics — July 4–11, 2026</h1>
+    <div class="generated">Generated July 11, 2026 · compared to the prior 7 days (June 27 – July 4)</div>
+    <div class="version-stamp">Week of Jul 4–11, 2026</div>
   </header>
 
   <h2 class="section-title">This Week at a Glance</h2>
@@ -128,7 +128,7 @@
       <div class="label">Extraction Success Rate</div>
       <div class="value">100%</div>
       <div class="delta">▲ flat (9 of 9)</div>
-      <div class="caveat">Prior week also 100% (1 of 1). Fourth straight weekly bucket at 100% — pipeline is healthy.</div>
+      <div class="caveat">Prior week also 100% (1 of 1). Third straight weekly bucket at 100% — pipeline is healthy.</div>
     </div>
     <div class="kpi-card green">
       <div class="label">Queries</div>
@@ -153,7 +153,7 @@
   </div>
 
   <div class="callout amber" style="margin-top:16px;">
-    <strong>Headline read:</strong> the biggest drop is still at the very first step — <strong>Account Created → Captured a Person/Note</strong> (2 signups, only 1 captured anyone; a 50-point drop). Everyone who captured also got a successful extraction and asked a query — <strong>no loss</strong> at either later step. This is the same pattern as last week's report: a <strong>motivation/onboarding problem, not an extraction problem</strong>, and it has now shown up two weeks running unaddressed. (n=2, directional only.)
+    <strong>Headline read:</strong> the biggest drop is still at the very first step — <strong>Account Created → Captured a Person/Note</strong> (2 signups, only 1 captured anyone; a 50-point drop). Everyone who captured also got a successful extraction and asked a query — <strong>no loss</strong> at either later step. This is a <strong>motivation/onboarding problem, not an extraction problem</strong>, and it has now shown up in multiple report cycles running unaddressed. (n=2, directional only.)
   </div>
 
   <h2 class="section-title">Pipeline Health — Submissions vs Successful Extractions (4-week trend)</h2>
@@ -165,7 +165,7 @@
     </div>
   </div>
   <div class="callout" style="margin-top:16px;">
-    <strong>Operational read:</strong> extraction success rate has climbed from ~0% (week of 6/7, 0 of 1) and 58% (week of 6/14) to <strong>100% for four straight weekly buckets running</strong> (6/21, 6/28, and the two most recent buckets including this week). No pipeline fire to fight right now.
+    <strong>Operational read:</strong> extraction success rate climbed from ~0% (week of 6/7, 0 of 1) and 58% (week of 6/14) to <strong>100% for three straight weekly buckets running</strong> (6/21, 6/28, and the week of 7/5 including today). No pipeline fire to fight right now.
   </div>
 
   <h2 class="section-title">Capture Activity — This Week vs Last Week</h2>
@@ -176,18 +176,19 @@
       <div class="canvas-wrap"><canvas id="captureChart"></canvas></div>
     </div>
   </div>
+  <div class="callout" style="margin-top:16px;">All 9 submissions this week were repeat captures on people already in the graph — 0 net-new people added. That's a good retention-of-existing-data signal, but also means no fresh people entered the graph this week.</div>
 
   <h2 class="section-title">Query Depth &amp; Capture Speed — No Reliable Data This Week</h2>
   <div class="chart-grid">
     <div class="chart-card">
       <h3>Query Depth (turn_index)</h3>
       <div class="desc">Not charted — see note.</div>
-      <div class="callout amber">All 23 query_asked events this week landed in the "none" bucket for turn_index. Per the known instrumentation limitation, turn_index only populates on events fired after the recent deploy — this remains a data gap, not a behavior signal, unchanged from the last two reports. No conversation-depth read is possible yet.</div>
+      <div class="callout amber">All 23 query_asked events this week landed in the "none" bucket for turn_index. Per the known instrumentation limitation, turn_index only populates on events fired after the recent deploy — this remains a data gap, not a behavior signal, unchanged across recent reports. No conversation-depth read is possible yet.</div>
     </div>
     <div class="chart-card">
       <h3>Capture Speed (ms_to_node_visible)</h3>
       <div class="desc">Not charted — see note.</div>
-      <div class="callout amber">9 person_capture_timing events fired this week, but none carried a value for ms_to_node_visible — p50/p90 are not computable. This is the same instrumentation gap flagged in the prior two reports and has not been fixed; worth a check that the client is still sending this property.</div>
+      <div class="callout amber">person_capture_timing events fired this week, but p50/p90 of ms_to_node_visible compute to 0ms — an artifact of missing/zeroed values, not real timing. Same instrumentation gap flagged in prior reports and still not fixed; worth checking that the client is still sending this property.</div>
     </div>
   </div>
 
@@ -199,7 +200,7 @@
     <div class="stat-mini"><div class="n">0 <span style="font-size:12px;color:var(--sub);">(was 0)</span></div><div class="l">People Search</div></div>
     <div class="stat-mini"><div class="n">0 <span style="font-size:12px;color:var(--sub);">(was 0)</span></div><div class="l">Feedback Sent</div></div>
   </div>
-  <div class="callout" style="margin-top:12px;">Exploration features (graph, profiles) dropped to zero this week after modest use last week (5 graph opens, 5 profile views) — the same 5→0 swing seen in the prior report cycle, just one week later. With n≈2–10 active users this tracks who happened to log in rather than a product signal; worth watching if it persists a third week.</div>
+  <div class="callout" style="margin-top:12px;">Exploration features (graph, profiles) have stayed at zero this week, down from a modest 5 graph opens / 5 profile views the week before. With n≈2–10 active users this tracks who happened to log in rather than a firm product signal, but it's now held at zero long enough to be worth watching rather than dismissing.</div>
 
   <div class="howto">
     <strong>How to read this report</strong>
@@ -214,12 +215,12 @@
 
   <div class="means">
     <h2>What This Means</h2>
-    <p>Extraction is healthy — 100% success rate this week, and for four straight weekly buckets now. The pipeline is not the problem. The problem, unchanged from last week's report, is that only half of this week's two signups ever captured a person in the first place; everyone who did capture went on to a successful extraction and a query with zero further drop-off.</p>
-    <p>Query depth and capture-speed remain unreadable for a third consecutive report: turn_index is unset on every query_asked event, and ms_to_node_visible is missing from every person_capture_timing event despite the event itself firing 9 times this week. Both look like standing instrumentation gaps rather than one-off blips at this point.</p>
+    <p>Extraction is healthy — 100% success rate this week, and for three straight weekly buckets now. The pipeline is not the problem. The problem, unchanged across recent reports, is that only half of this week's two signups ever captured a person in the first place; everyone who did capture went on to a successful extraction and a query with zero further drop-off.</p>
+    <p>Query depth and capture-speed remain unreadable: turn_index is unset on every query_asked event, and ms_to_node_visible is missing or zeroed on person_capture_timing events despite the event itself firing this week. Both look like standing instrumentation gaps rather than one-off blips at this point.</p>
 
     <div class="rec">
       <div class="tag">Recommendation</div>
-      <p><strong>Metric: Account Created → Captured a Person/Note = 50% this week (1 of 2 signups) — the same gap flagged last week.</strong> Extraction is already at 100%, so this isn't a pipeline issue — it's onboarding. Signups still aren't reliably capturing their first person, and the fix hasn't landed yet. Ship a guided first-capture flow immediately after signup (e.g. "add your first contact" as an onboarding step) rather than a query nudge, since the users who do capture are already converting all the way to a query with no further loss. (n=2 — re-check this read once signup volume grows.)</p>
+      <p><strong>Metric: Account Created → Captured a Person/Note = 50% this week (1 of 2 signups) — the same gap flagged in prior reports.</strong> Extraction is already at 100%, so this isn't a pipeline issue — it's onboarding. Signups still aren't reliably capturing their first person, and the fix hasn't landed yet. Ship a guided first-capture flow immediately after signup (e.g. "add your first contact" as an onboarding step) rather than a query nudge, since the users who do capture are already converting all the way to a query with no further loss. (n=2 — re-check this read once signup volume grows.)</p>
     </div>
   </div>
 
@@ -309,7 +310,7 @@
           borderRadius: 6,
         },
         {
-          label: 'This Week (Jul 4–10)',
+          label: 'This Week (Jul 4–11)',
           data: [0, 9],
           backgroundColor: '#2563eb',
           borderRadius: 6,
