@@ -1,1 +1,330 @@
-__SAME_AS_INDEX__
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almura Analytics — July 4–11, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f8fafc; --card-bg: #ffffff; --ink: #0f172a; --sub: #64748b; --border: #e2e8f0;
+    --green: #16a34a; --green-bg: #f0fdf4; --green-bd: #bbf7d0;
+    --amber: #b45309; --amber-bg: #fffbeb; --amber-bd: #fde68a;
+    --red: #dc2626; --red-bg: #fef2f2; --red-bd: #fecaca;
+    --blue: #2563eb; --blue-bg: #eff6ff;
+    --purple: #7c3aed;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1120; --card-bg: #131b2e; --ink: #e2e8f0; --sub: #94a3b8; --border: #1f2a3d;
+      --green-bg: #0e2417; --green-bd: #14532d;
+      --amber-bg: #2a1f06; --amber-bd: #78350f;
+      --red-bg: #2a1212; --red-bd: #7f1d1d;
+      --blue-bg: #0f1c33;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b1120; --card-bg: #131b2e; --ink: #e2e8f0; --sub: #94a3b8; --border: #1f2a3d;
+    --green-bg: #0e2417; --green-bd: #14532d;
+    --amber-bg: #2a1f06; --amber-bd: #78350f;
+    --red-bg: #2a1212; --red-bd: #7f1d1d;
+    --blue-bg: #0f1c33;
+  }
+  :root[data-theme="light"] {
+    --bg: #f8fafc; --card-bg: #ffffff; --ink: #0f172a; --sub: #64748b; --border: #e2e8f0;
+    --green-bg: #f0fdf4; --green-bd: #bbf7d0;
+    --amber-bg: #fffbeb; --amber-bd: #fde68a;
+    --red-bg: #fef2f2; --red-bd: #fecaca;
+    --blue-bg: #eff6ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 20px 80px; }
+  header { margin-bottom: 32px; }
+  h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.02em; }
+  .generated { color: var(--sub); font-size: 13px; }
+  .version-stamp { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--blue); background: var(--blue-bg); padding: 4px 10px; border-radius: 999px; }
+
+  h2.section-title { font-size: 15px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sub); margin: 40px 0 14px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; }
+  .kpi-card .label { font-size: 12.5px; color: var(--sub); font-weight: 600; margin-bottom: 8px; }
+  .kpi-card .value { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .kpi-card .delta { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 700; margin-top: 8px; padding: 2px 8px; border-radius: 999px; }
+  .kpi-card .caveat { font-size: 11px; color: var(--sub); margin-top: 8px; line-height: 1.4; }
+  .kpi-card.green { border-color: var(--green-bd); }
+  .kpi-card.green .delta { color: var(--green); background: var(--green-bg); }
+  .kpi-card.amber { border-color: var(--amber-bd); }
+  .kpi-card.amber .delta { color: var(--amber); background: var(--amber-bg); }
+  .kpi-card.red { border-color: var(--red-bd); }
+  .kpi-card.red .delta { color: var(--red); background: var(--red-bg); }
+
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 800px) { .chart-grid { grid-template-columns: 1fr; } }
+  .chart-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px 12px; }
+  .chart-card h3 { font-size: 14.5px; margin: 0 0 2px; }
+  .chart-card .desc { font-size: 12px; color: var(--sub); margin-bottom: 12px; }
+  .chart-card .canvas-wrap { position: relative; height: 260px; }
+  .chart-card.full { grid-column: 1 / -1; }
+
+  .callout { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px 20px; font-size: 13.5px; }
+  .callout.amber { background: var(--amber-bg); border-color: var(--amber-bd); }
+  .callout strong { color: var(--ink); }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
+  .stat-mini { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .stat-mini .n { font-size: 20px; font-weight: 700; }
+  .stat-mini .l { font-size: 11px; color: var(--sub); margin-top: 2px; }
+
+  .howto { background: var(--card-bg); border: 1px dashed var(--border); border-radius: 14px; padding: 16px 20px; font-size: 12.5px; color: var(--sub); }
+  .howto strong { color: var(--ink); }
+  .howto ul { margin: 8px 0 0; padding-left: 18px; }
+  .howto li { margin-bottom: 4px; }
+
+  .means { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-top: 40px; }
+  .means h2 { font-size: 18px; margin: 0 0 14px; }
+  .means p { margin: 0 0 12px; font-size: 14.5px; }
+  .rec { background: var(--green-bg); border: 1px solid var(--green-bd); border-radius: 10px; padding: 14px 16px; margin-top: 14px; }
+  .rec .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--green); }
+  .rec p { margin: 6px 0 0; font-size: 13.5px; }
+
+  footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--sub); }
+  footer a { color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Almura Analytics — July 4–11, 2026</h1>
+    <div class="generated">Generated July 11, 2026 · compared to the prior 7 days (June 27 – July 4)</div>
+    <div class="version-stamp">Week of Jul 4–11, 2026</div>
+  </header>
+
+  <h2 class="section-title">This Week at a Glance</h2>
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="label">New Signups</div>
+      <div class="value">2</div>
+      <div class="delta">▲ new (was 0)</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="label">Active Users (WAU)</div>
+      <div class="value">10</div>
+      <div class="delta">▲ +400% (2 → 10)</div>
+      <div class="caveat">Real-action WAU: unique users firing source_submitted OR query_asked. n is tiny at this stage — directional only.</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="label">Captures</div>
+      <div class="value">9</div>
+      <div class="delta">▲ +800% (1 → 9)</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="label">Extraction Success Rate</div>
+      <div class="value">100%</div>
+      <div class="delta">▲ flat (9 of 9)</div>
+      <div class="caveat">Prior week also 100% (1 of 1). Third straight weekly bucket at 100% — pipeline is healthy.</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="label">Queries</div>
+      <div class="value">23</div>
+      <div class="delta">▲ +92% (12 → 23)</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="label">Activation Rate</div>
+      <div class="value">50%</div>
+      <div class="delta">◆ 1 of 2 signups</div>
+      <div class="caveat">Signups → first query, end to end. n=2 this week; prior week had 0 signups (not comparable). Do not read this as a stable percentage.</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Activation Funnel — Signup to First Query (this week)</h2>
+  <div class="chart-grid">
+    <div class="chart-card full">
+      <h3>Account Created → Captured Person/Note → Extraction Succeeded → Asked a Query</h3>
+      <div class="desc">14-day conversion window. n=2 signups this week — every percentage below is directional only, not statistically meaningful.</div>
+      <div class="canvas-wrap"><canvas id="funnelChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="callout amber" style="margin-top:16px;">
+    <strong>Headline read:</strong> the biggest drop is still at the very first step — <strong>Account Created → Captured a Person/Note</strong> (2 signups, only 1 captured anyone; a 50-point drop). Everyone who captured also got a successful extraction and asked a query — <strong>no loss</strong> at either later step. This is a <strong>motivation/onboarding problem, not an extraction problem</strong>, and it has now shown up in multiple report cycles running unaddressed. (n=2, directional only.)
+  </div>
+
+  <h2 class="section-title">Pipeline Health — Submissions vs Successful Extractions (4-week trend)</h2>
+  <div class="chart-grid">
+    <div class="chart-card full">
+      <h3>source_submitted vs processing_completed</h3>
+      <div class="desc">Two independent lines — never summed. A gap where Submitted rises above Extraction Succeeded is the silent-failure mode.</div>
+      <div class="canvas-wrap"><canvas id="pipelineChart"></canvas></div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:16px;">
+    <strong>Operational read:</strong> extraction success rate climbed from ~0% (week of 6/7, 0 of 1) and 58% (week of 6/14) to <strong>100% for three straight weekly buckets running</strong> (6/21, 6/28, and the week of 7/5 including today). No pipeline fire to fight right now.
+  </div>
+
+  <h2 class="section-title">Capture Activity — This Week vs Last Week</h2>
+  <div class="chart-grid">
+    <div class="chart-card full">
+      <h3>New People (person_added) vs Total Submissions (source_submitted)</h3>
+      <div class="desc">Separate bars, not summed. The gap between them is repeat capture on people already in the graph — a good sign.</div>
+      <div class="canvas-wrap"><canvas id="captureChart"></canvas></div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:16px;">All 9 submissions this week were repeat captures on people already in the graph — 0 net-new people added. That's a good retention-of-existing-data signal, but also means no fresh people entered the graph this week.</div>
+
+  <h2 class="section-title">Query Depth &amp; Capture Speed — No Reliable Data This Week</h2>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Query Depth (turn_index)</h3>
+      <div class="desc">Not charted — see note.</div>
+      <div class="callout amber">All 23 query_asked events this week landed in the "none" bucket for turn_index. Per the known instrumentation limitation, turn_index only populates on events fired after the recent deploy — this remains a data gap, not a behavior signal, unchanged across recent reports. No conversation-depth read is possible yet.</div>
+    </div>
+    <div class="chart-card">
+      <h3>Capture Speed (ms_to_node_visible)</h3>
+      <div class="desc">Not charted — see note.</div>
+      <div class="callout amber">person_capture_timing events fired this week, but p50/p90 of ms_to_node_visible compute to 0ms — an artifact of missing/zeroed values, not real timing. Same instrumentation gap flagged in prior reports and still not fixed; worth checking that the client is still sending this property.</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Feature Engagement — This Week vs Last Week</h2>
+  <div class="stat-row">
+    <div class="stat-mini"><div class="n">0 <span style="font-size:12px;color:var(--sub);">(was 5)</span></div><div class="l">Graph Opened</div></div>
+    <div class="stat-mini"><div class="n">0 <span style="font-size:12px;color:var(--sub);">(was 5)</span></div><div class="l">Profile Viewed</div></div>
+    <div class="stat-mini"><div class="n">0 <span style="font-size:12px;color:var(--sub);">(was 0)</span></div><div class="l">Node Preview</div></div>
+    <div class="stat-mini"><div class="n">0 <span style="font-size:12px;color:var(--sub);">(was 0)</span></div><div class="l">People Search</div></div>
+    <div class="stat-mini"><div class="n">0 <span style="font-size:12px;color:var(--sub);">(was 0)</span></div><div class="l">Feedback Sent</div></div>
+  </div>
+  <div class="callout" style="margin-top:12px;">Exploration features (graph, profiles) have stayed at zero this week, down from a modest 5 graph opens / 5 profile views the week before. With n≈2–10 active users this tracks who happened to log in rather than a firm product signal, but it's now held at zero long enough to be worth watching rather than dismissing.</div>
+
+  <div class="howto">
+    <strong>How to read this report</strong>
+    <ul>
+      <li><strong>Never summed:</strong> person_added ≠ source_submitted (submissions include repeat captures on existing people).</li>
+      <li><strong>Never summed:</strong> graph_opened ≠ $pageview on /network.</li>
+      <li><strong>Never summed:</strong> profile_viewed ≠ $pageview on /people/[id].</li>
+      <li>Active Users uses real actions (source_submitted OR query_asked), not $identify/$pageview — at this scale, raw session counts are inflated by anonymous/bot traffic.</li>
+      <li>Almura is in early staged rollout (~10 real users). Every percentage here is <strong>directional</strong>, not statistical — small-n caveats are called out inline.</li>
+    </ul>
+  </div>
+
+  <div class="means">
+    <h2>What This Means</h2>
+    <p>Extraction is healthy — 100% success rate this week, and for three straight weekly buckets now. The pipeline is not the problem. The problem, unchanged across recent reports, is that only half of this week's two signups ever captured a person in the first place; everyone who did capture went on to a successful extraction and a query with zero further drop-off.</p>
+    <p>Query depth and capture-speed remain unreadable: turn_index is unset on every query_asked event, and ms_to_node_visible is missing or zeroed on person_capture_timing events despite the event itself firing this week. Both look like standing instrumentation gaps rather than one-off blips at this point.</p>
+
+    <div class="rec">
+      <div class="tag">Recommendation</div>
+      <p><strong>Metric: Account Created → Captured a Person/Note = 50% this week (1 of 2 signups) — the same gap flagged in prior reports.</strong> Extraction is already at 100%, so this isn't a pipeline issue — it's onboarding. Signups still aren't reliably capturing their first person, and the fix hasn't landed yet. Ship a guided first-capture flow immediately after signup (e.g. "add your first contact" as an onboarding step) rather than a query nudge, since the users who do capture are already converting all the way to a query with no further loss. (n=2 — re-check this read once signup volume grows.)</p>
+    </div>
+  </div>
+
+  <footer>
+    Almura Analytics · PostHog project 465974 · <a href="https://us.posthog.com/project/465974/dashboard/1700240">Source dashboard</a>
+  </footer>
+
+</div>
+
+<script>
+  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const gridColor = isDark ? 'rgba(148,163,184,0.15)' : 'rgba(15,23,42,0.08)';
+  const tickColor = isDark ? '#94a3b8' : '#64748b';
+  Chart.defaults.color = tickColor;
+  Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
+  new Chart(document.getElementById('funnelChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Account Created', 'Captured Person/Note', 'Extraction Succeeded', 'Asked a Query'],
+      datasets: [{
+        label: 'Users',
+        data: [2, 1, 1, 1],
+        backgroundColor: ['#2563eb', '#7c3aed', '#7c3aed', '#16a34a'],
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const pct = [100, 50, 50, 50];
+              return ctx.parsed.x + ' users (' + pct[ctx.dataIndex] + '% of step 1)';
+            }
+          }
+        }
+      },
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, color: tickColor }, grid: { color: gridColor } },
+        y: { grid: { display: false }, ticks: { color: tickColor } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('pipelineChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jun 7', 'Jun 14', 'Jun 21', 'Jun 28', 'Jul 5 (this wk)'],
+      datasets: [
+        {
+          label: 'Submitted',
+          data: [1, 19, 4, 1, 9],
+          borderColor: '#2563eb',
+          backgroundColor: '#2563eb',
+          tension: 0.3,
+        },
+        {
+          label: 'Extraction Succeeded',
+          data: [0, 11, 4, 1, 9],
+          borderColor: '#16a34a',
+          backgroundColor: '#16a34a',
+          tension: 0.3,
+        }
+      ]
+    },
+    options: {
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: tickColor } },
+        y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: tickColor } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('captureChart'), {
+    type: 'bar',
+    data: {
+      labels: ['New People (person_added)', 'Total Submissions (source_submitted)'],
+      datasets: [
+        {
+          label: 'Last Week (Jun 27–Jul 3)',
+          data: [1, 1],
+          backgroundColor: '#94a3b8',
+          borderRadius: 6,
+        },
+        {
+          label: 'This Week (Jul 4–11)',
+          data: [0, 9],
+          backgroundColor: '#2563eb',
+          borderRadius: 6,
+        }
+      ]
+    },
+    options: {
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: tickColor } },
+        y: { beginAtZero: true, ticks: { stepSize: 1, color: tickColor }, grid: { color: gridColor } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
